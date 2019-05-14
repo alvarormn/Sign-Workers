@@ -4,8 +4,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SignSchema = Schema({
-  time: Date
-  //user: { type: Schema.ObjectID, ref: 'User' }
+  date: Date,
+  time: Date,
+  moment: Boolean,
+  user: { type: Schema.ObjectId, ref: 'User' }
 })
 
 module.exports = mongoose.model('Sign', SignSchema);

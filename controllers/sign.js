@@ -13,13 +13,17 @@ function setSign(req,res) {
 
   User.findOne({dni: req.user.dni}, (err, output) => {
     idUser = output._id;
-    console.log(idUser);
   });
 
-  //sign.time = params.time;
-  sign.time = moment().unix();
-  sign.user = idUser;
+  var d = moment().format('L');
+  var dUnix = moment().unix(d);
+  var t = moment().format('LTS');
+  var tUnix = moment().unix(t);
 
+  sign.date = dUnix;
+  sign.time = tUnix;
+  sign.user = idUser;
+  console.log(sign)
   sign.save((err,signStored) => {
     if (err) {
       res.status(500).send({

@@ -13,21 +13,26 @@ function setSign(req,res) {
 
   User.findOne({dni: req.user.dni}, (err, output) => {
     idUser = output._id;
+    console.log(idUser);
   });
 
-  var d = moment().format('L');
+  //Sing.findOne({_id: })
+
+  var d = moment().format();
+  //console.log(d)
   var dUnix = moment().unix(d);
-  var t = moment().format('LTS');
-  var tUnix = moment().unix(t);
+  //console.log(dUnix);
+  var utc = moment(dUnix).utc()
+  //console.log(utc);
 
   sign.date = dUnix;
-  sign.time = tUnix;
-  sign.user = idUser;
+  sign.moment = 1;
+  sign.usuario = idUser;
   console.log(sign)
   sign.save((err,signStored) => {
     if (err) {
       res.status(500).send({
-        message: 'Error al guardar'
+        message: 'Error al guardar - ' + err
       })
     } else {
       if (!signStored) {

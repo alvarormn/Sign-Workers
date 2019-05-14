@@ -5,9 +5,8 @@ var Schema = mongoose.Schema;
 
 var SignSchema = Schema({
   date: Date,
-  time: Date,
   moment: Boolean,
-  user: { type: Schema.ObjectId, ref: 'User' }
+  usuario: {type: Schema.ObjectId, ref: 'User'}
 })
 
 module.exports = mongoose.model('Sign', SignSchema);

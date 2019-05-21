@@ -9,11 +9,31 @@ function setSign(req,res) {
   var user = new User();
   var params = req.body;
   //var user = req.user;
-  var idUser;
 
   User.findOne({dni: req.user.dni}, (err, output) => {
-    idUser = output._id;
-    console.log(idUser);
+
+    sign.date = dUnix;
+  
+    sign.moment = 1;
+    sign.user = output._id;
+    console.log(sign)
+    sign.save((err,signStored) => {
+      if (err) {
+        res.status(500).send({
+          message: 'Error al guardar - ' + err
+        })
+      } else {
+        if (!signStored) {
+          res.status(404).send({
+            message: 'No se ha podido guardar'
+          })
+        } else {
+          res.status(200).send({
+            sign: signStored
+          })
+        }
+      }
+    })
   });
 
   //Sing.findOne({_id: })
@@ -25,27 +45,7 @@ function setSign(req,res) {
   var utc = moment(dUnix).utc()
   //console.log(utc);
 
-  sign.date = dUnix;
-  sign.moment = 1;
-  sign.usuario = idUser;
-  console.log(sign)
-  sign.save((err,signStored) => {
-    if (err) {
-      res.status(500).send({
-        message: 'Error al guardar - ' + err
-      })
-    } else {
-      if (!signStored) {
-        res.status(404).send({
-          message: 'No se ha podido guardar'
-        })
-      } else {
-        res.status(200).send({
-          sign: signStored
-        })
-      }
-    }
-  })
+
 
 }
 

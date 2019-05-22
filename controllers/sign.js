@@ -18,6 +18,18 @@ function setSign(req,res) {
     sign.date = d;
     sign.hour = h;
 
+    Sign.findOne({date: d}, (err, output) => {
+      if (err) {
+        es.status(500).send({
+          message: 'Error - ' + err
+        })
+      } else if (!output) {
+        console.log("No ha encontrado ninguna fecha")
+      } else {
+        console.log(output)
+      }
+    })
+
     sign.moment = 1;
     sign.user = output._id;
     console.log(sign)

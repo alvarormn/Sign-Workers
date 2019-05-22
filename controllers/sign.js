@@ -3,6 +3,7 @@
 var Sign = require('../models/sign');
 var User = require('../models/user');
 var moment = require('moment');
+moment.locale('es');
 
 function setSign(req,res) {
   var sign = new Sign();
@@ -10,46 +11,66 @@ function setSign(req,res) {
   var params = req.body;
   //var user = req.user;
 
-  User.findOne({dni: req.user.dni}, (err, output) => {
+  User.findOne({dni: req.user.dni}, (err, findUser) => {
 
     var d = moment().format('L');
     var h = moment().format('LTS');
 
     sign.date = d;
     sign.hour = h;
+    sign.user = findUser._id;
+    //console.log(sign)
 
-    Sign.findOne({date: d}, (err, output) => {
-      if (err) {
-        es.status(500).send({
-          message: 'Error - ' + err
-        })
-      } else if (!output) {
-        console.log("No ha encontrado ninguna fecha")
-      } else {
-        console.log(output)
+    //sign.moment = 1; -> Entrada
+    //sign.moment = 0; -> Salida
+    Sign.find({date: d}, (err, findSign) => {
+
+      if (findSign) {
+        console.log(findSign.length)
+        console.log(findSign)
       }
-    })
 
-    sign.moment = 1;
-    sign.user = output._id;
-    console.log(sign)
-    sign.save((err,signStored) => {
       if (err) {
         res.status(500).send({
-          message: 'Error al guardar - ' + err
+          message: 'Error - ' + err
+        })
+      } else if(findSign.length === 0){
+        console.log("Entrada de: " + findUser.name);
+        sign.moment = 1;
+        saveSing();
+      } else if(findSign.length > 1) {
+        res.status(200).send({
+          sign: 'El usuario ' + findUser.name + ' ya realizó la salida hoy ' + d
         })
       } else {
-        if (!signStored) {
-          res.status(404).send({
-            message: 'No se ha podido guardar'
+        console.log("Salida de: " + findUser.name);
+        sign.moment = 0;
+        saveSing();
+      }
+
+    })
+
+    function saveSing() {
+      sign.save((err,signStored) => {
+        if (err) {
+          res.status(500).send({
+            message: 'Error al guardar - ' + err
           })
         } else {
-          res.status(200).send({
-            sign: signStored
-          })
+          if (!signStored) {
+            res.status(404).send({
+              message: 'No se ha podido guardar'
+            })
+          } else {
+            res.status(200).send({
+              sign: signStored
+            })
+          }
         }
-      }
-    })
+      })
+    }
+
+
 
   });
 

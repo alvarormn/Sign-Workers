@@ -12,8 +12,12 @@ function setSign(req,res) {
 
   User.findOne({dni: req.user.dni}, (err, output) => {
 
-    sign.date = dUnix;
-  
+    var d = moment().format('L');
+    var h = moment().format('LTS');
+
+    sign.date = d;
+    sign.hour = h;
+
     sign.moment = 1;
     sign.user = output._id;
     console.log(sign)
@@ -34,18 +38,8 @@ function setSign(req,res) {
         }
       }
     })
+
   });
-
-  //Sing.findOne({_id: })
-
-  var d = moment().format();
-  //console.log(d)
-  var dUnix = moment().unix(d);
-  //console.log(dUnix);
-  var utc = moment(dUnix).utc()
-  //console.log(utc);
-
-
 
 }
 

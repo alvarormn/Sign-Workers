@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var SignSchema = Schema({
-  date: Date,
+  date: String,
+  hour: String,
   moment: Boolean,
   user: {type: Schema.ObjectId, ref: 'User'}
 })

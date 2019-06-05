@@ -18,6 +18,7 @@ function setSign(req,res) {
 
     sign.date = d;
     sign.hour = h;
+    sign.completeDate = moment().format();
     sign.user = findUser._id;
     //console.log(sign)
 

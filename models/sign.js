@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var SignSchema = Schema({
   date: String,
   hour: String,
+  completeDate: Date,
   moment: Boolean,
   user: {type: Schema.ObjectId, ref: 'User'}
 })

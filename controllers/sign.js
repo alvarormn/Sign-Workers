@@ -10,6 +10,7 @@ function setSign(req,res) {
   var user = new User();
   var params = req.body;
   //var user = req.user;
+  console.log(params)
 
   User.findOne({dni: req.user.dni}, (err, findUser) => {
 
